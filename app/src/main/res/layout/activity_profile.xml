@@ -22,14 +22,6 @@
                 android:background="#FFFFFF"
                 android:orientation="vertical">
 
-                <!--<ImageView-->
-                <!--android:id="@+id/profile_image"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_gravity="center_horizontal"-->
-                <!--android:scaleType="centerCrop"-->
-                <!--android:transitionName="user_swipe_image_transition" />-->
-
                 <com.github.ybq.parallaxviewpager.ParallaxViewPager xmlns:pv="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/parallax_viewpager"
                     android:layout_width="match_parent"

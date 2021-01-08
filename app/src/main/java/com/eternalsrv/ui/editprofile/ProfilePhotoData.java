@@ -1,9 +1,5 @@
 package com.eternalsrv.ui.editprofile;
 
-/**
- * Created by Adam on 2018-10-02..
- */
-
 public class ProfilePhotoData {
     private String link;
     private Integer blobId;

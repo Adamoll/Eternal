@@ -5,10 +5,6 @@ import com.quickblox.chat.model.QBChatMessage;
 
 import java.util.ArrayList;
 
-/**
- * Created by Adam on 30-09-2017.
- */
-
 public class ChatDialog extends QBChatDialog {
     private ArrayList<QBChatMessage> messages;
 

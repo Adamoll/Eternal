@@ -21,9 +21,6 @@ import java.util.TreeMap;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by Adam on 2018-11-26..
- */
 public class UnitTestTest {
     @Test
     public void myPreferencesTest() throws Exception {

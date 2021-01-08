@@ -8,10 +8,6 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 
-/**
- * Created by Adam on 2018-09-28..
- */
-
 public interface PhotoUploadService {
      @Multipart
      @POST(".")
