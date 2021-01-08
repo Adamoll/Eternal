@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.eternalsrv.ui.TestResultsFragment">
+    <TextView
+        android:text="@string/results"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:id="@+id/titleResult"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+    <TextView
+        android:text="@string/result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/resultType"
+        android:layout_below="@id/titleResult"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:text="@string/introversion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/IText"
+        android:layout_below="@+id/resultType"
+        android:layout_toEndOf="@+id/resultType"
+        android:layout_toRightOf="@+id/resultType"/>
+
+    <TextView
+        android:text="@string/sensing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/SText"
+        android:layout_below="@+id/IText"
+        android:layout_alignStart="@+id/IText"
+        android:layout_alignLeft="@+id/IText"/>
+
+    <TextView
+        android:text="@string/thinking"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/TText"
+        android:layout_below="@+id/SText"
+        android:layout_alignStart="@+id/SText"
+        android:layout_alignLeft="@+id/SText"/>
+
+    <TextView
+        android:text="@string/judging"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/JText"
+        android:layout_below="@+id/TText"
+        android:layout_alignStart="@+id/TText"
+        android:layout_alignLeft="@+id/TText"/>
+
+    <TextView
+        android:text="@string/extroversion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/EText"
+        android:layout_below="@+id/resultType"
+        android:layout_toStartOf="@+id/resultType"
+        android:layout_toLeftOf="@+id/resultType"/>
+
+    <TextView
+        android:text="@string/intuition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/NText"
+        android:layout_below="@+id/EText"
+        android:layout_alignStart="@+id/EText"
+        android:layout_alignLeft="@+id/EText"/>
+
+    <TextView
+        android:text="@string/feeling"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/FText"
+        android:layout_below="@+id/NText"
+        android:layout_alignStart="@+id/NText"
+        android:layout_alignLeft="@+id/NText"/>
+
+    <TextView
+        android:text="@string/perceiving"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/PText"
+        android:layout_below="@+id/FText"
+        android:layout_alignStart="@+id/FText"
+        android:layout_alignLeft="@+id/FText"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/backFromResults"
+        android:layout_below="@+id/PText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:text="@string/exit" />
+</RelativeLayout>
+
+

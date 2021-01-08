@@ -1,0 +1,4 @@
+<resources>
+    <item name = "sideSpace" format="float" type = "integer">0.065</item>
+    <item name = "seekbarSpace" format="float" type = "integer">0.87</item>
+</resources>

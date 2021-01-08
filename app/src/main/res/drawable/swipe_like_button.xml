@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:innerRadius="30dp"
+    android:shape="ring"
+    android:thickness="15dp"
+    android:useLevel="false" >
+
+    <gradient
+        android:endColor="@color/white"
+        android:gradientRadius="@dimen/_30sdp"
+        android:startColor="@color/swipe_button_ring"
+        android:type="radial" />
+</shape>

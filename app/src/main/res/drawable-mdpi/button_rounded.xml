@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <corners
+                android:topLeftRadius="@dimen/button_rounded_radius"
+                android:topRightRadius="@dimen/button_rounded_radius"
+                android:bottomRightRadius="@dimen/button_rounded_radius"
+                android:bottomLeftRadius="@dimen/button_rounded_radius">
+            </corners>
+            <solid
+                android:color="@color/color_button_rounded_press">
+            </solid>
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <corners
+                android:topLeftRadius="@dimen/button_rounded_radius"
+                android:topRightRadius="@dimen/button_rounded_radius"
+                android:bottomRightRadius="@dimen/button_rounded_radius"
+                android:bottomLeftRadius="@dimen/button_rounded_radius">
+            </corners>
+            <solid
+                android:color="@color/color_button_rounded">
+            </solid>
+        </shape>
+    </item>
+</selector>

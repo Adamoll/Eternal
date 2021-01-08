@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    style="@style/ListItem"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:paddingLeft="@dimen/_8sdp"
+    android:paddingRight="@dimen/list_item_side_margin"
+    tools:ignore="RtlHardcoded">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <com.eternalsrv.ui.widget.circularprogressindicator.CircularProgressIndicator
+            android:id="@+id/dialog_match_progress_indicator"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            app:direction="clockwise"
+            app:drawDot="false"
+            app:progressCap="round"
+            app:progressColor="@color/colorPrimary"
+            app:progressStrokeWidth="4dp"
+            app:startAngle="270"
+            app:textColor="@color/transparent" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/image_dialog_icon"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/list_item_side_margin"
+            android:scaleType="centerCrop"
+            android:src="@drawable/background_icon_circle"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_chat_group" />
+    </RelativeLayout>
+
+    <LinearLayout
+        style="@style/WeightWidth"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/_4sdp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_dialog_name"
+            style="@style/DialogNameStyle"
+            tools:text="Room name" />
+
+        <TextView
+            android:id="@+id/text_dialog_last_message"
+            style="@style/DialogLastMessageStyle"
+            tools:text="Long last message to see how margin on the right side works" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/text_dialog_unread_count"
+        style="@style/DialogUnreadCounterStyle"
+        android:visibility="visible"
+        tools:text="4" />
+</LinearLayout>

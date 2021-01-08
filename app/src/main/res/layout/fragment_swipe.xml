@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.scwang.wave.MultiWaveHeader
+        android:id="@+id/waveHeader"
+        android:layout_width="match_parent"
+        android:layout_height="225dp"
+        android:scaleY="1"
+        app:mwhCloseColor="@color/white"
+        app:mwhColorAlpha="0.2"
+        app:mwhGradientAngle="360"
+        app:mwhIsRunning="true"
+        app:mwhProgress="1"
+        app:mwhStartColor="@color/colorPrimaryLight2"
+        app:mwhVelocity="2.5"
+        app:mwhWaveHeight="50dp"
+        app:mwhWaves="MultiWave" />
+
+    <TextView
+        android:id="@+id/no_dialogs_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginHorizontal="@dimen/_30sdp"
+        android:fontFamily="@font/proxima_nova_semibold"
+        android:paddingTop="@dimen/_180sdp"
+        android:gravity="center_horizontal"
+        android:text="@string/no_more_matches"
+        android:textSize="@dimen/_18sdp" />
+
+    <link.fls.swipestack.SwipeStack
+        android:id="@+id/swipeStack"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_415sdp"
+        app:scale_factor="1"
+        app:stack_rotation="0"
+        app:stack_size="5"
+        app:stack_spacing="0dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_80sdp"
+        android:layout_below="@+id/swipeStack"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center">
+
+        <LinearLayout
+            android:id="@+id/swipe_dislike_button_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/swipe_like_button"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:padding="@dimen/_15sdp">
+
+            <ImageView
+                android:layout_width="@dimen/_24sdp"
+                android:layout_height="@dimen/_24sdp"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop"
+                android:src="@drawable/swipe_dislike"
+                android:tint="@color/swipe_dislike_button_tint" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/swipe_like_button_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_32sdp"
+            android:background="@drawable/swipe_like_button"
+            android:padding="@dimen/_15sdp"
+            android:clipToPadding="false"
+            android:clipChildren="false">
+            <ImageView
+                android:layout_width="@dimen/_28sdp"
+                android:layout_gravity="center"
+                android:layout_height="@dimen/_28sdp"
+                android:src="@drawable/swipe_like"
+                android:scaleType="centerCrop"
+                android:tint="@color/swipe_like_button_tint"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>

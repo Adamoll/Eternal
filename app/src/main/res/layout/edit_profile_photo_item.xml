@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:clipChildren="false">
+    <androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/edit_profile_photo_cardview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_4sdp"
+        app:cardUseCompatPadding="true"
+        app:cardElevation="@dimen/_1sdp"
+        card_view:cardCornerRadius="8dp"
+
+        card_view:cardBackgroundColor="@android:color/white">
+        <ImageView
+            android:id="@+id/edit_profile_photo_image"
+            android:layout_width="@dimen/_85sdp"
+            android:layout_height="@dimen/_120sdp"
+            android:scaleType="centerCrop"
+            android:background="#C0C5C9"/>
+    </androidx.cardview.widget.CardView>
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/edit_profile_photo_add_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/add_icon"
+        android:tint="@color/colorAccent"
+        android:layout_gravity="bottom|end"
+        android:visibility="gone"
+        app:backgroundTint="@color/white"
+        app:useCompatPadding="true"
+        app:pressedTranslationZ="@dimen/_2sdp"
+        app:elevation="@dimen/_1sdp"
+        app:fabCustomSize="@dimen/_28sdp"
+        app:maxImageSize="@dimen/_16sdp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/edit_profile_photo_delete_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/delete_icon"
+        android:tint="@color/colorAccent"
+        android:layout_gravity="bottom|end"
+        android:visibility="gone"
+        app:backgroundTint="@color/white"
+        app:useCompatPadding="true"
+        app:pressedTranslationZ="@dimen/_2sdp"
+        app:elevation="@dimen/_1sdp"
+        app:fabCustomSize="@dimen/_28sdp"
+        app:maxImageSize="@dimen/_12sdp"/>
+</FrameLayout>

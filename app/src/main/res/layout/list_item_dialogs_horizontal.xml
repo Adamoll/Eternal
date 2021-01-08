@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/_8sdp">
+    <com.eternalsrv.ui.widget.circularprogressindicator.CircularProgressIndicator
+        android:id="@+id/horizontal_dialog_match_progress_indicator"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_gravity="center"
+        android:layout_centerHorizontal="true"
+        app:direction="clockwise"
+        app:drawDot="false"
+        app:progressColor="@color/primary_purple"
+        app:textColor="@color/transparent"
+        app:progressCap="round"
+        app:startAngle="270"
+        app:progressStrokeWidth="5dp" />
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/list_dialogs_slider_image"
+        android:layout_marginTop="4dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:scaleType="centerCrop"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/background_icon_circle"/>
+
+    <TextView
+        android:id="@+id/list_dialogs_slider_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TESTO"
+        android:textColor="#000"
+        android:layout_below="@id/list_dialogs_slider_image"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMaxTextSize="16dp"/>
+
+</RelativeLayout>

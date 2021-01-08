@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="RtlHardcoded,RtlSymmetry">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/dialogs_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/dialogs_matched_users_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/proxima_nova_semibold"
+                android:paddingLeft="@dimen/activity_vertical_margin"
+                android:paddingTop="@dimen/activity_horizontal_margin"
+                android:text="@string/matched_users"
+                android:textColor="@color/gray_material"
+                android:textSize="@dimen/_20sdp" />
+
+            <RelativeLayout
+                android:id="@+id/dialogs_matched_users_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/list_dialogs_profile_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:overScrollMode="never"
+                    android:paddingTop="@dimen/_8sdp"/>
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/proxima_nova_semibold"
+                android:paddingLeft="@dimen/activity_vertical_margin"
+                android:paddingTop="@dimen/_8sdp"
+                android:paddingBottom="@dimen/padding_common"
+                android:text="@string/matched_messages"
+                android:textColor="@color/gray_material"
+                android:textSize="@dimen/_20sdp" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/dialogs_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never" />
+            </RelativeLayout>
+
+            <com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout
+                android:id="@+id/swipy_refresh_layout"
+                style="@style/MatchParent"
+                app:srl_direction="bottom">
+
+                <!--<ListView-->
+                <!--android:id="@+id/list_dialogs_chats"-->
+                <!--style="@style/ListViewWithoutDividerStyle"-->
+                <!--android:divider="@drawable/list_divider"-->
+                <!--android:dividerHeight="1dp"-->
+                <!--android:overScrollMode="never"-->
+                <!--android:animateLayoutChanges="true"/>-->
+
+            </com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <RelativeLayout
+        android:id="@+id/no_dialogs_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="invisible">
+
+        <ImageView
+            android:id="@+id/no_dialogs_icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_130sdp"
+            android:src="@drawable/no_dialogs" />
+
+        <TextView
+            android:id="@+id/no_dialogs_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/no_dialogs_icon"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginHorizontal="@dimen/_30sdp"
+            android:fontFamily="@font/proxima_nova_semibold"
+            android:gravity="center_horizontal"
+            android:text="@string/start_swiping"
+            android:textSize="@dimen/_18sdp" />
+
+    </RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/contentPanel"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/match_dialog_overlay"
+        android:orientation="vertical">
+    </FrameLayout>
+    <LinearLayout
+        android:id="@+id/match_dialog_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/match_dialog_match_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:layout_marginBottom="-16dp"
+            android:fontFamily="@font/hipster_script_pro"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:lineSpacingMultiplier="0.7"
+            android:text="You've got\n a match!"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_48sdp" />
+
+        <TextView
+            android:id="@+id/match_dialog_match_value_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_16sdp"
+            android:text="Your and Maria's\npersonality fit together in 25%!"
+            android:fontFamily="@font/proxima_nova_regular"
+            android:textSize="@dimen/_20sdp"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:gravity="center" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/match_dialog_image_left"
+                android:layout_width="@dimen/_96sdp"
+                android:layout_height="@dimen/_96sdp"
+                android:layout_marginRight="16dp"
+                app:civ_border_width="@dimen/_2sdp"
+                app:civ_border_color="@color/white"
+                tools:src="@drawable/com_facebook_profile_picture_blank_portrait" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/match_dialog_image_right"
+                android:layout_width="@dimen/_96sdp"
+                android:layout_height="@dimen/_96sdp"
+                android:layout_marginLeft="16dp"
+                app:civ_border_width="@dimen/_2sdp"
+                app:civ_border_color="@color/white"
+                tools:src="@drawable/com_facebook_profile_picture_blank_portrait" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+
+            android:orientation="vertical">
+            <Button
+                android:id="@+id/match_dialog_send_message"
+                android:layout_width="@dimen/_240sdp"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:text="Send message"
+                android:textColor="@color/cardview_light_background"
+                android:background="@drawable/button_rounded"
+                />
+
+            <Button
+                android:id="@+id/match_dialog_keep_swiping"
+                android:layout_marginTop="16dp"
+                android:layout_width="@dimen/_240sdp"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:text="Keep swiping"
+                android:textColor="@color/cardview_light_background"
+                android:background="@drawable/button_rounded"
+                />
+
+
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragment_login_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_background"
+    tools:context="com.eternalsrv.ui.FBLoginFragment">
+    <com.github.mmin18.widget.RealtimeBlurView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginRight="@dimen/_24sdp"
+        android:layout_marginLeft="@dimen/_24sdp"
+        android:layout_marginTop="@dimen/_48sdp"
+        android:layout_marginBottom="@dimen/_48sdp"
+        app:realtimeBlurRadius="100dp"
+        app:realtimeOverlayColor="#55ffffff"
+        app:realtimeDownsampleFactor="4"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_64sdp"
+            android:layout_gravity="center"
+            android:includeFontPadding="false"
+            android:fontFamily="@font/proxima_nova_cond_bold"
+            android:textSize="@dimen/_72sdp"
+            android:textColor="#FFFFFF"
+            android:text="@string/app_name_lowercase"/>
+
+        <ImageView
+            android:id="@+id/eternal_login_logo"
+            android:layout_width="@dimen/_128sdp"
+            android:layout_height="@dimen/_128sdp"
+            android:layout_marginBottom="@dimen/_64sdp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/login_logo"
+            />
+
+        <Button
+            android:id="@+id/facebook_login_button"
+            android:layout_width="@dimen/_240sdp"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:text="@string/login_with_facebook"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:drawablePadding="@dimen/_4sdp"
+            android:gravity="start|center_vertical"
+            android:drawableLeft="@drawable/facebook_icon"
+            android:drawableTint="@color/white"
+            android:paddingStart="@dimen/_50sdp"
+            android:background="@drawable/facebook_login_button" />
+    </LinearLayout>
+
+</RelativeLayout>
