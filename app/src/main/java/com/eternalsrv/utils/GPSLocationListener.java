@@ -3,8 +3,8 @@ package com.eternalsrv.utils;
 import android.location.Location;
 
 import com.eternalsrv.App;
-import com.eternalsrv.utils.asynctasks.AsyncTaskParams;
 import com.eternalsrv.utils.asynctasks.BaseAsyncTask;
+import com.eternalsrv.utils.asynctasks.model.LocationUpdatedRequest;
 import com.eternalsrv.utils.constant.ServerMethodsConsts;
 import com.google.android.gms.location.LocationListener;
 
@@ -24,11 +24,9 @@ public class GPSLocationListener implements LocationListener {
         myPreferences.setLongitude(longitude);
         preferencesManager.savePreferences();
         if(myPreferences.getFbId() != null && myPreferences.getUserId() != null) {
-            AsyncTaskParams params = new AsyncTaskParams();
-            params.put("user_id", myPreferences.getUserId());
-            params.put("longitude", longitude);
-            params.put("latitude", latitude);
-            BaseAsyncTask updateLocation = new BaseAsyncTask(ServerMethodsConsts.LOCATION, params);
+            LocationUpdatedRequest locationUpdatedRequest = new LocationUpdatedRequest(myPreferences.getUserId(),
+                    longitude, latitude);
+            BaseAsyncTask<LocationUpdatedRequest> updateLocation = new BaseAsyncTask<>(ServerMethodsConsts.LOCATION, locationUpdatedRequest);
             updateLocation.setHttpMethod("POST");
             updateLocation.execute();
         }

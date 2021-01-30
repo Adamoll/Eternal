@@ -20,12 +20,3 @@ public class QBUserCustomData {
         this.profilePhotoData = profilePhotoData;
     }
 }
-
-
-
-
-
-
-
-
-

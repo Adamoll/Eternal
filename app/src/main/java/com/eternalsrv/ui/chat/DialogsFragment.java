@@ -28,8 +28,10 @@ import com.eternalsrv.ui.adapters.chat.DialogsAdapter;
 import com.eternalsrv.ui.swipe.ItemTouchHelperCallback;
 import com.eternalsrv.ui.swipe.UserProfileInfo;
 import com.eternalsrv.ui.swipe.adapters.HorizontalListDialogsRecyclerViewAdapter;
-import com.eternalsrv.utils.asynctasks.AsyncTaskParams;
 import com.eternalsrv.utils.asynctasks.BaseAsyncTask;
+import com.eternalsrv.utils.asynctasks.model.UserProfileInfoModel;
+import com.eternalsrv.utils.asynctasks.model.UserProfileInfoReply;
+import com.eternalsrv.utils.asynctasks.model.UserProfileInfoRequest;
 import com.eternalsrv.utils.chat.ChatHelper;
 import com.eternalsrv.utils.chat.DialogsManager;
 import com.eternalsrv.utils.constant.GcmConsts;
@@ -56,12 +58,7 @@ import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.core.request.QBRequestGetBuilder;
 import com.quickblox.users.model.QBUser;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class DialogsFragment extends Fragment implements DialogsManager.ManagingDialogsCallbacks {
@@ -315,10 +312,8 @@ public class DialogsFragment extends Fragment implements DialogsManager.Managing
     }
 
     private void getUserDialogInfo(String userIds) {
-        AsyncTaskParams params = new AsyncTaskParams();
-        params.put("user_profile_ids", userIds);
-        params.put("user_id", App.getPreferences().getUserId());
-        GetUsersProfileInfo baseAsyncTask = new GetUsersProfileInfo(ServerMethodsConsts.USERSPROFILEINFO, params);
+        UserProfileInfoRequest userDialogInfoModel = new UserProfileInfoRequest(App.getPreferences().getUserId(), userIds);
+        GetUsersProfileInfo baseAsyncTask = new GetUsersProfileInfo(ServerMethodsConsts.USERSPROFILEINFO, userDialogInfoModel);
         baseAsyncTask.setHttpMethod("POST");
         baseAsyncTask.execute();
     }
@@ -437,43 +432,22 @@ public class DialogsFragment extends Fragment implements DialogsManager.Managing
         }
     }
 
-    private class GetUsersProfileInfo extends BaseAsyncTask{
+    private class GetUsersProfileInfo extends BaseAsyncTask<UserProfileInfoRequest>{
 
-        public GetUsersProfileInfo(String urn, AsyncTaskParams params) {
+        public GetUsersProfileInfo(String urn, UserProfileInfoRequest params) {
             super(urn, params);
         }
 
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            try {
-                JSONObject jsonObject = new JSONObject(result);
-                if (jsonObject.getString("status").equals("ok")) {
-                    JSONArray jsonArray = jsonObject.getJSONArray("users_profile_info");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject user = jsonArray.getJSONObject(i);
-                        UserProfileInfo profileInfo = new UserProfileInfo();
-                        profileInfo.setUserId(user.getInt("user_id"));
-                        profileInfo.setName(user.getString("name"));
-                        profileInfo.setUserQbId(user.getInt("qb_id"));
-                        profileInfo.setDescription(user.getString("description"));
-                        profileInfo.setAge(user.getInt("age"));
-                        profileInfo.setDistance(user.getInt("distance"));
-                        profileInfo.setPhotoLinks(copyLinks(user.getString("photo_links")));
-                        UserProfileInfoHolder.getInstance().putProfileInfo(profileInfo);
-                    }
+            UserProfileInfoReply userProfileInfoReply = App.getGson().fromJson(result, UserProfileInfoReply.class);
+            if (userProfileInfoReply.isStatusOkay()) {
+                for (UserProfileInfoModel model : userProfileInfoReply.getUsersProfileInfo()) {
+                    UserProfileInfo profileInfo = new UserProfileInfo(model);
+                    UserProfileInfoHolder.getInstance().putProfileInfo(profileInfo);
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
             }
-        }
-
-        private List<String> copyLinks(String links) throws JSONException {
-            if (links != null) {
-                String[] list = links.split(";");
-                return Arrays.asList(list);
-            }
-            return null;
         }
     }
 }

@@ -3,9 +3,11 @@ package com.eternalsrv.ui;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,15 +20,14 @@ import com.eternalsrv.App;
 import com.eternalsrv.R;
 import com.eternalsrv.models.PersonalityTrait;
 import com.eternalsrv.utils.MyPreferences;
-import com.eternalsrv.utils.PreferencesManager;
-import com.eternalsrv.utils.asynctasks.AsyncTaskParams;
 import com.eternalsrv.utils.asynctasks.BaseAsyncTask;
+import com.eternalsrv.utils.asynctasks.model.TestRequest;
 import com.eternalsrv.utils.constant.ServerMethodsConsts;
 import com.kofigyan.stateprogressbar.StateProgressBar;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
+import java.util.HashMap;
 
 public class TestFragment extends Fragment {
     private ScrollView scrollView;
@@ -64,7 +65,7 @@ public class TestFragment extends Fragment {
         allQuestions = new String[numberOfScreens * numberOfQuestionsPerPage];
         shuffledQuestionIndexes = new ArrayList<>();
 
-        for(int i = 0; i < allQuestions.length; i++)
+        for (int i = 0; i < allQuestions.length; i++)
             shuffledQuestionIndexes.add(i + 1);
 
         Collections.shuffle(shuffledQuestionIndexes);
@@ -77,7 +78,7 @@ public class TestFragment extends Fragment {
         SliderQ5 = (SeekBar) view.findViewById(com.eternalsrv.R.id.sliderQ5);
         SliderQ6 = (SeekBar) view.findViewById(com.eternalsrv.R.id.sliderQ6);
         sliders = new SeekBar[]{SliderQ1, SliderQ2, SliderQ3, SliderQ4, SliderQ5, SliderQ6};
-        for(SeekBar s: sliders) {
+        for (SeekBar s : sliders) {
             s.setOnSeekBarChangeListener(seekBarChangeListener);
             s.setProgress(51);
             s.setProgress(50);
@@ -92,7 +93,7 @@ public class TestFragment extends Fragment {
         textViews = new TextView[]{textQ1, textQ2, textQ3, textQ4, textQ5, textQ6};
 
         Button nextQuestions = (Button) view.findViewById(com.eternalsrv.R.id.nextQuestions);
-        nextQuestions.setOnClickListener(new View.OnClickListener(){
+        nextQuestions.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -201,13 +202,12 @@ public class TestFragment extends Fragment {
 
 
     private SeekBar.OnSeekBarChangeListener seekBarChangeListener
-            = new SeekBar.OnSeekBarChangeListener()
-    {
+            = new SeekBar.OnSeekBarChangeListener() {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             double barProgress = seekBar.getProgress();
-            float max = (float)seekBar.getMax();
-            float h = 15 + (float)((max / range) * barProgress);
+            float max = (float) seekBar.getMax();
+            float h = 15 + (float) ((max / range) * barProgress);
             float s = 100;
             float v = 90;
             String hexColor = hsvToRgb(h, s, v);
@@ -227,8 +227,7 @@ public class TestFragment extends Fragment {
         }
     };
 
-    public void saveAnswers()
-    {
+    public void saveAnswers() {
         for (int i = 0; i < numberOfQuestionsPerPage; i++) {
             for (PersonalityTrait temp : personalityTraits) {
                 if (temp.containsNumber(shuffledQuestionIndexes.get(numberOfQuestionsPerPage * (actualScreen - 1) + i))) {
@@ -273,16 +272,15 @@ public class TestFragment extends Fragment {
         } else {
             saveAnswers();
 
-            AsyncTaskParams params = new AsyncTaskParams();
-            params.put("user_id", myPreferences.getUserId().toString());
-            params.put("number_of_questions", 24);
+            HashMap<String, String> answers = new HashMap<>();
             for (PersonalityTrait tr : personalityTraits) {
                 for (int i = 0; i < tr.getNumbersOfQuestions().length; i++) {
-                    params.put("q" + tr.getNumbersOfQuestions()[i], tr.getAnswerPoints()[i]);
+                    answers.put("q" + tr.getNumbersOfQuestions()[i], String.valueOf(tr.getAnswerPoints()[i]));
                 }
             }
 
-            BaseAsyncTask sendResults = new BaseAsyncTask(ServerMethodsConsts.TEST, params);
+            TestRequest testRequest = new TestRequest(myPreferences.getUserId(), 24, answers);
+            BaseAsyncTask<TestRequest> sendResults = new BaseAsyncTask<>(ServerMethodsConsts.TEST, testRequest);
             sendResults.setHttpMethod("POST");
             sendResults.execute();
 
@@ -303,8 +301,7 @@ public class TestFragment extends Fragment {
         S /= 100f;
         V /= 100f;
 
-        if (S == 0)
-        {
+        if (S == 0) {
             R = V * 255;
             G = V * 255;
             B = V * 255;

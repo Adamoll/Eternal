@@ -14,6 +14,7 @@ import com.eternalsrv.utils.MyPreferences;
 import com.eternalsrv.utils.PreferencesManager;
 import com.eternalsrv.utils.configs.ConfigUtils;
 import com.eternalsrv.utils.configs.CoreConfigUtils;
+import com.google.gson.Gson;
 import com.quickblox.auth.session.QBSettings;
 import com.quickblox.core.ServiceZone;
 
@@ -34,6 +35,7 @@ public class App extends Application {
 
     private static PreferencesManager preferencesManager;
     private static MyPreferences preferences;
+    private static Gson gson = new Gson();
 
     @Override
     public void onCreate() {
@@ -82,6 +84,10 @@ public class App extends Application {
                 QBSettings.getInstance().setZone(ServiceZone.PRODUCTION);
             }
         }
+    }
+
+    public static Gson getGson() {
+        return gson;
     }
 
     public static QbConfigs getQbConfigs(){

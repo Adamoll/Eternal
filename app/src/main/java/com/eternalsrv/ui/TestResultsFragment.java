@@ -3,9 +3,10 @@ package com.eternalsrv.ui;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +18,11 @@ import com.eternalsrv.App;
 import com.eternalsrv.R;
 import com.eternalsrv.utils.MyPreferences;
 import com.eternalsrv.utils.PreferencesManager;
-import com.eternalsrv.utils.asynctasks.AsyncTaskParams;
 import com.eternalsrv.utils.asynctasks.BaseAsyncTask;
+import com.eternalsrv.utils.asynctasks.model.TestReply;
 import com.eternalsrv.utils.constant.ServerMethodsConsts;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-public class TestResultsFragment extends Fragment{
+public class TestResultsFragment extends Fragment {
     private TextView TextEResult;
     private TextView TextIResult;
     private TextView TextSResult;
@@ -46,7 +44,7 @@ public class TestResultsFragment extends Fragment{
         preferencesManager = App.getPreferencesManager();
         myPreferences = App.getPreferences();
 
-        GetResults gR = new GetResults(ServerMethodsConsts.RESULTS + "/" + myPreferences.getUserId(), null);
+        GetResults gR = new GetResults(ServerMethodsConsts.RESULTS + "/" + myPreferences.getUserId());
         gR.execute();
 
         Button backButton = (Button) view.findViewById(R.id.backFromResults);
@@ -60,21 +58,16 @@ public class TestResultsFragment extends Fragment{
         TextJResult = (TextView) view.findViewById(com.eternalsrv.R.id.JText);
         typeTResult = (TextView) view.findViewById(com.eternalsrv.R.id.resultType);
 
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainActivity) getActivity()).getFbLoginFragment().changeFragment((MainActivity)getActivity());
-            }
-        });
+        backButton.setOnClickListener(v -> ((MainActivity) getActivity()).getFbLoginFragment().changeFragment((MainActivity) getActivity()));
 
         return view;
     }
 
-    private class GetResults extends BaseAsyncTask{
+    private class GetResults extends BaseAsyncTask<Void> {
         ProgressDialog resultProgress;
 
-        public GetResults(String urn, AsyncTaskParams params) {
-            super(urn, params);
+        public GetResults(String urn) {
+            super(urn, null);
             resultProgress = new ProgressDialog(getActivity());
         }
 
@@ -89,30 +82,21 @@ public class TestResultsFragment extends Fragment{
         @SuppressLint("DefaultLocale")
         @Override
         protected void onPostExecute(String result) {
-            try {
-                if (result != null) {
-                    JSONObject obj = new JSONObject(result);
-                    String type = obj.getString("type");
-                    int e = obj.getInt("e");
-                    int n = obj.getInt("n");
-                    int t = obj.getInt("t");
-                    int p = obj.getInt("p");
-                    myPreferences.setMbtiType(type);
-                    preferencesManager.savePreferences();
-                    typeTResult.setText(type);
-                    TextEResult.setText(String.format("Extraversion: %d%%", e));
-                    TextIResult.setText(String.format("Introversion: %d%%", 100 - e));
-                    TextSResult.setText(String.format("Sensing: %d%%", 100 - n));
-                    TextNResult.setText(String.format("Intuition: %d%%", n));
-                    TextTResult.setText(String.format("Thinking: %d%%", t));
-                    TextFResult.setText(String.format("Feeling: %d%%", 100 - t));
-                    TextJResult.setText(String.format("Judging: %d%%", 100 - p));
-                    TextPResult.setText(String.format("Perceiving: %d%%", p));
-                } else {
-                    Toast.makeText(getActivity(), "server error", Toast.LENGTH_LONG).show();
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
+            if (result != null) {
+                TestReply testReply = App.getGson().fromJson(result, TestReply.class);
+                myPreferences.setMbtiType(testReply.getType());
+                preferencesManager.savePreferences();
+                typeTResult.setText(testReply.getType());
+                TextEResult.setText(String.format("Extraversion: %d%%", testReply.getE()));
+                TextIResult.setText(String.format("Introversion: %d%%", 100 - testReply.getE()));
+                TextSResult.setText(String.format("Sensing: %d%%", 100 - testReply.getN()));
+                TextNResult.setText(String.format("Intuition: %d%%", testReply.getN()));
+                TextTResult.setText(String.format("Thinking: %d%%", testReply.getT()));
+                TextFResult.setText(String.format("Feeling: %d%%", 100 - testReply.getT()));
+                TextJResult.setText(String.format("Judging: %d%%", 100 - testReply.getP()));
+                TextPResult.setText(String.format("Perceiving: %d%%", testReply.getP()));
+            } else {
+                Toast.makeText(getActivity(), "server error", Toast.LENGTH_LONG).show();
             }
             if (resultProgress.isShowing())
                 resultProgress.dismiss();

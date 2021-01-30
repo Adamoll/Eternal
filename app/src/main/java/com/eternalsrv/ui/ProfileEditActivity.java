@@ -32,8 +32,10 @@ import com.eternalsrv.utils.Config;
 import com.eternalsrv.utils.MyPreferences;
 import com.eternalsrv.utils.PreferencesManager;
 import com.eternalsrv.utils.SharedPrefsHelper;
-import com.eternalsrv.utils.asynctasks.AsyncTaskParams;
 import com.eternalsrv.utils.asynctasks.BaseAsyncTask;
+import com.eternalsrv.utils.asynctasks.model.PhotoUploadReply;
+import com.eternalsrv.utils.asynctasks.model.ProfileDeletePhotoRequest;
+import com.eternalsrv.utils.asynctasks.model.ProfileUpdateRequest;
 import com.eternalsrv.utils.constant.ServerMethodsConsts;
 import com.eternalsrv.utils.imagepick.GetFilePathFromUri;
 import com.google.gson.Gson;
@@ -42,9 +44,6 @@ import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -191,12 +190,9 @@ public class ProfileEditActivity extends AppCompatActivity implements OnStartDra
                 builder.append(photoDataList.get(i).getLink());
             }
         }
-
-        AsyncTaskParams params = new AsyncTaskParams();
-        params.put("description", myPreferences.getDescription());
-        params.put("user_id", myPreferences.getUserId());
-        params.put("photo_links", builder.toString());
-        BaseAsyncTask saveSettingsTask = new BaseAsyncTask(ServerMethodsConsts.USERPROFILE, params);
+        ProfileUpdateRequest profileUpdateRequest = new ProfileUpdateRequest(myPreferences.getUserId(), myPreferences.getDescription(),
+                builder.toString());
+        BaseAsyncTask<ProfileUpdateRequest> saveSettingsTask = new BaseAsyncTask<>(ServerMethodsConsts.USERPROFILE, profileUpdateRequest);
         saveSettingsTask.setHttpMethod("POST");
         saveSettingsTask.execute();
     }
@@ -221,21 +217,19 @@ public class ProfileEditActivity extends AppCompatActivity implements OnStartDra
         Call<ResponseBody> call = photoUploadService.upload(body, userId, imagePosition, qbSessionToken);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 try {
-                    JSONObject json = new JSONObject(response.body().string());
-                    if (json.getString("status").equals("ok")) {
-                        String photoLink = json.getString("photo_link");
-                        Integer blobId = json.getInt("blob_id");
-                        updateUserCustomData(new ProfilePhotoData(photoLink, blobId), filePath);
+                    PhotoUploadReply photoUploadReply = App.getGson().fromJson(response.body().string(), PhotoUploadReply.class);
+                    if (photoUploadReply.isStatusOkay()) {
+                        updateUserCustomData(new ProfilePhotoData(photoUploadReply.getPhotoLink(), photoUploadReply.getBlobId()), filePath);
                     }
-                } catch (JSONException | IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                 t.printStackTrace();
             }
         });
@@ -243,12 +237,9 @@ public class ProfileEditActivity extends AppCompatActivity implements OnStartDra
 
 
     public void deletePhoto(final ProfilePhotoData photoData) {
-        AsyncTaskParams params = new AsyncTaskParams();
-        params.put("user_id", myPreferences.getUserId());
-        params.put("qb_token", QBSessionManager.getInstance().getToken());
-        params.put("photo_link", photoData.getLink());
-        params.put("blob_id", photoData.getBlobId());
-        BaseAsyncTask deletePhotoTask = new BaseAsyncTask(ServerMethodsConsts.PHOTO + "/", params);
+        ProfileDeletePhotoRequest deletePhotoModel = new ProfileDeletePhotoRequest(myPreferences.getUserId(),
+                QBSessionManager.getInstance().getToken(), photoData.getLink(), photoData.getBlobId());
+        BaseAsyncTask<ProfileDeletePhotoRequest> deletePhotoTask = new BaseAsyncTask<>(ServerMethodsConsts.PHOTO + "/", deletePhotoModel);
         deletePhotoTask.setHttpMethod("DELETE");
         deletePhotoTask.execute();
 

@@ -3,7 +3,13 @@ package com.eternalsrv.ui.swipe;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.eternalsrv.utils.asynctasks.model.UserProfileInfoModel;
+import com.eternalsrv.utils.asynctasks.model.UserProfileInfoReply;
+
+import org.json.JSONException;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class UserProfileInfo implements Parcelable {
@@ -17,6 +23,16 @@ public class UserProfileInfo implements Parcelable {
     private String description;
 
     public UserProfileInfo() {
+    }
+
+    public UserProfileInfo(UserProfileInfoModel model) {
+        this.userId = model.getUserId();
+        this.userQbId = model.getQuickbloxId();
+        this.name = model.getName();
+        this.age = model.getAge();
+        this.distance = model.getDistance();
+        this.description = model.getDescription();
+        this.photoLinks = splitLinks(model.getPhotoLinks());
     }
 
     public int getUserId() {
@@ -119,6 +135,14 @@ public class UserProfileInfo implements Parcelable {
         dest.writeInt(matchValue);
         dest.writeInt(distance);
         dest.writeString(description);
+    }
+
+    private static List<String> splitLinks(String links) {
+        if (links != null) {
+            String[] list = links.split(";");
+            return Arrays.asList(list);
+        }
+        return null;
     }
 
     @SuppressWarnings("unused")

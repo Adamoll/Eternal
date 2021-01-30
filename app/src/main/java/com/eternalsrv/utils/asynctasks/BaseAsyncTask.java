@@ -2,6 +2,7 @@ package com.eternalsrv.utils.asynctasks;
 
 import android.os.AsyncTask;
 
+import com.eternalsrv.App;
 import com.eternalsrv.utils.Config;
 
 import java.io.BufferedReader;
@@ -11,24 +12,22 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
-import java.net.ProtocolException;
 import java.net.URL;
 
-public class BaseAsyncTask extends AsyncTask<String, Void, String> {
-    private String urn;
+public class BaseAsyncTask<T> extends AsyncTask<String, Void, String> {
     private String httpMethod;
-    private AsyncTaskParams asyncTaskParams;
+    private T requestParams;
     private HttpURLConnection connection;
 
-    public BaseAsyncTask(String urn, AsyncTaskParams params) {
-        this.urn = urn;
+    public BaseAsyncTask(String urn, T params) {
         try {
             connection = (HttpURLConnection) new URL(Config.getServer() + urn).openConnection();
-            asyncTaskParams = params;
+            requestParams = params;
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -42,12 +41,11 @@ public class BaseAsyncTask extends AsyncTask<String, Void, String> {
             if ("POST".equals(httpMethod) || "DELETE".equals(httpMethod)) {
                 connection.setDoOutput(true);
                 connection.setRequestMethod(httpMethod);
-                String query = asyncTaskParams.toString();
 
                 OutputStream os = connection.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(
                         new OutputStreamWriter(os, "UTF-8"));
-                writer.write(query);
+                writer.write(App.getGson().toJson(requestParams));
                 writer.flush();
                 writer.close();
                 os.close();
@@ -78,28 +76,8 @@ public class BaseAsyncTask extends AsyncTask<String, Void, String> {
         super.onPostExecute(result);
     }
 
-    public String getUrn() {
-        return urn;
-    }
-
-    public void setUrn(String urn) {
-        this.urn = urn;
-    }
-
-    public String getHttpMethod() {
-        return httpMethod;
-    }
-
     public void setHttpMethod(String httpMethod) {
         this.httpMethod = httpMethod;
-    }
-
-    public AsyncTaskParams getAsyncTaskParams() {
-        return asyncTaskParams;
-    }
-
-    public void setAsyncTaskParams(AsyncTaskParams asyncTaskParams) {
-        this.asyncTaskParams = asyncTaskParams;
     }
 }
 

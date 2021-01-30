@@ -24,8 +24,8 @@ import com.eternalsrv.ui.widget.SettingsSeekbar;
 import com.eternalsrv.utils.MyPreferences;
 import com.eternalsrv.utils.PreferencesManager;
 import com.eternalsrv.utils.SharedPrefsHelper;
-import com.eternalsrv.utils.asynctasks.AsyncTaskParams;
 import com.eternalsrv.utils.asynctasks.BaseAsyncTask;
+import com.eternalsrv.utils.asynctasks.model.UpdateSettingsRequest;
 import com.eternalsrv.utils.chat.ChatHelper;
 import com.eternalsrv.utils.constant.ServerMethodsConsts;
 import com.eternalsrv.utils.holders.QbDialogHolder;
@@ -208,14 +208,11 @@ public class SettingsActivity extends AppCompatActivity {
         myPreferences.setAgeRangeMax(ageRangeSeekbar.getSelectedMaxValue().intValue());
         preferencesManager.savePreferences();
 
-        AsyncTaskParams params = new AsyncTaskParams();
-        params.put("radious", myPreferences.getRadious());
-        params.put("min_match_value", myPreferences.getMinMatchValue());
-        params.put("user_id", myPreferences.getUserId());
-        params.put("sex_choice", myPreferences.getSexChoice());
-        params.put("age_range_min", myPreferences.getAgeRangeMin());
-        params.put("age_range_max", myPreferences.getAgeRangeMax());
-        BaseAsyncTask saveSettingsTask = new BaseAsyncTask(ServerMethodsConsts.USERSETTINGS, params);
+
+        UpdateSettingsRequest updateSettingsRequest = new UpdateSettingsRequest(myPreferences.getUserId(),
+                myPreferences.getRadious(), myPreferences.getMinMatchValue(), myPreferences.getSexChoice(),
+                myPreferences.getAgeRangeMin(), myPreferences.getAgeRangeMax());
+        BaseAsyncTask<UpdateSettingsRequest> saveSettingsTask = new BaseAsyncTask<>(ServerMethodsConsts.USERSETTINGS, updateSettingsRequest);
         saveSettingsTask.setHttpMethod("POST");
         saveSettingsTask.execute();
     }

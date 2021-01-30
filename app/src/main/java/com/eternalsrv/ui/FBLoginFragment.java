@@ -16,7 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +32,9 @@ import com.eternalsrv.utils.MyPreferences;
 import com.eternalsrv.utils.PreferencesManager;
 import com.eternalsrv.utils.ResourceUtils;
 import com.eternalsrv.utils.SharedPrefsHelper;
-import com.eternalsrv.utils.asynctasks.AsyncTaskParams;
 import com.eternalsrv.utils.asynctasks.BaseAsyncTask;
+import com.eternalsrv.utils.asynctasks.model.LoginReply;
+import com.eternalsrv.utils.asynctasks.model.LoginRequest;
 import com.eternalsrv.utils.chat.ChatHelper;
 import com.eternalsrv.utils.constant.GcmConsts;
 import com.eternalsrv.utils.constant.ServerMethodsConsts;
@@ -50,9 +51,6 @@ import com.quickblox.auth.session.QBSessionManager;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.users.model.QBUser;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -230,11 +228,8 @@ public class FBLoginFragment extends Fragment {
         if (!logged) {
             try {
                 if(!logFromSession) {
-                    AsyncTaskParams params = new AsyncTaskParams();
-                    params.put("fb_id", myPreferences.getFbId());
-                    params.put("accessToken", myPreferences.getFbAccessToken());
-
-                    BaseAsyncTask task = new BaseAsyncTask(ServerMethodsConsts.LOGIN, params);
+                    LoginRequest loginRequest = new LoginRequest(myPreferences.getFbId(), myPreferences.getFbAccessToken());
+                    BaseAsyncTask<LoginRequest> task = new BaseAsyncTask<>(ServerMethodsConsts.LOGIN, loginRequest);
                     task.setHttpMethod("POST");
                     String result = task.execute().get();
                     handleLoginResponse(result);
@@ -257,30 +252,21 @@ public class FBLoginFragment extends Fragment {
     private void handleLoginResponse(String response) {
         try {
             if (response != null) {
-                JSONObject obj = new JSONObject(response);
-                String status = obj.getString("status");
-                if (status.equals("ok") || status.equals("registered")) {
-
-                    String type = "";
-                    try {
-                        type = obj.getString("type");
-                    } catch (JSONException json) {
-
-                    }
-                    myPreferences.setUserId(obj.getLong("user_id"));
-                    myPreferences.setFirstName(obj.getString("first_name"));
-                    myPreferences.setLastName(obj.getString("last_name"));
-                    myPreferences.setBirthday(new SimpleDateFormat("MM/dd/yyyy").parse(obj.getString("birthday")));
-                    myPreferences.setMinMatchValue(obj.getInt("min_match_value"));
-                    myPreferences.setSexChoice(obj.getString("sex_choice"));
-                    myPreferences.setRadious(obj.getInt("radius"));
-                    myPreferences.setAgeRangeMin(obj.getInt("age_range_min"));
-                    myPreferences.setAgeRangeMax(obj.getInt(("age_range_max")));
-                    myPreferences.setDescription(obj.getString("description"));
-                    myPreferences.setMbtiType(type);
+                LoginReply loginReply = App.getGson().fromJson(response, LoginReply.class);
+                if (loginReply.isStatusOkay() | loginReply.getStatus().equals("registered")) {
+                    myPreferences.setUserId(loginReply.getUserId());
+                    myPreferences.setFirstName(loginReply.getFirstName());
+                    myPreferences.setLastName(loginReply.getLastName());
+                    myPreferences.setBirthday(new SimpleDateFormat("MM/dd/yyyy").parse(loginReply.getBirthday()));
+                    myPreferences.setMinMatchValue(loginReply.getMinMatchValue());
+                    myPreferences.setSexChoice(loginReply.getSexChoice());
+                    myPreferences.setRadious(loginReply.getRadius());
+                    myPreferences.setAgeRangeMin(loginReply.getAgeRangeMin());
+                    myPreferences.setAgeRangeMax(loginReply.getAgeRangeMax());
+                    myPreferences.setDescription(loginReply.getDescription());
+                    myPreferences.setMbtiType(loginReply.getType() == null ? "" : loginReply.getType());
                     preferencesManager.savePreferences();
-
-                    if(status.equals("registered")) {
+                    if(loginReply.getStatus().equals("registered")) {
                         firstVisit = true;
                     }
                 } else {
@@ -288,7 +274,7 @@ public class FBLoginFragment extends Fragment {
                 }
             }
         } catch (Exception e) {
-            Toast.makeText(getContext(), "unknown error" + e.getMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "login error" + e.getMessage(), Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
     }
